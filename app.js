@@ -83,6 +83,27 @@ $(document).ready(function(){
     });    
   }
 
+function getLocation(address) {
+    $.ajax({
+      url: 'https://maps.googleapis.com/maps/api/distancematrix/json',
+      data: {
+        key: 'AIzaSyCmd0xB_4HTb1gHimgKe97BXOUyCLj9dQA',
+       	address: address
+      },
+      dataType: 'json',
+      type: 'GET',
+      success: function(data){
+        console.log("Get success")
+        console.log(data);
+      },
+      error: function(error){
+        console.log(error);
+      }
+    });    
+  }
+
+  getLocation(games[0].location);
+
   var showResults = function(results, type, level) {
     console.log(results);
     // Iterate over results, create HTML for each listing, append to #results
