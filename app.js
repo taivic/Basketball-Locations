@@ -55,7 +55,13 @@ $(document).ready(function(){
             level: ["Competitive"]
           }   
         ]
+ $("#results").hide();
+
+
+
 //get distance from entered zipcode to location of game
+  
+
   function checkDistance(zipcode, location) {
     $.ajax({
       url: 'https://maps.googleapis.com/maps/api/distancematrix/json',
@@ -80,7 +86,8 @@ $(document).ready(function(){
   var showResults = function(results, type, level) {
     console.log(results);
     // Iterate over results, create HTML for each listing, append to #results
-
+    $("#results").empty();
+    $("#results").show();
     for (var i = 0; i < results.length; i++) {
     		var html = "";
       html += "<p><em><b>" + results[i].name + "</b></em></p>";
@@ -89,6 +96,7 @@ $(document).ready(function(){
       html += "<p>" + level  + "</p><br>";
       $('#results').append(html);      
     }
+
   }
 
   var getGames = function(type, level, zipcode) {
