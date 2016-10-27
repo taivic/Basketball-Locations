@@ -28,7 +28,7 @@ body {
 
 .form-control, #zipcode {
 	color: black;
-	font-family: 'Farsan', cursive;
+	font-family: 'Farsan';
 	font-size: 16px;
 }
 
