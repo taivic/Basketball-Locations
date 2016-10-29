@@ -19,7 +19,11 @@ body {
 	font-weight: bold;
 }
 
-#zipcodeLabel, #results {
+#zipcodeLabel {
+	font-family: 'Shadows Into Light', cursive;
+}
+
+#results {
 	font-family: 'Farsan', cursive;
 	font-size: 16px;
 	color: white;
