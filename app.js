@@ -1,58 +1,68 @@
 $(document).ready(function(){
+	//data
 	var games = [
 		{
 			name: "Piotrowsky Park",
 			address: "4247 W 31st St, Chicago, IL 60623",
 			type: ["Women's Basketball", "Men's Basketball"],
-			level: ["Competitive"]
+			level: ["Competitive"],
+			coordinates: []
 		},
 		{
 			name: "Vittum Park", 
 			address: "5010 W 50th St, Chicago, IL 60638",
 			type: ["Women's Basketball"],
-			level: ["Competitive"]
+			level: ["Competitive"],
+			coordinates: []
 		},
 		{
 			name: "Pottawatomie Park",
 			address: "7340 N Rogers Ave, Chicago, IL 60626",
 			type: ["Women's Basketball"],
-			level: ["Recreational" , "Competitive"]
+			level: ["Recreational" , "Competitive"],
+			coordinates: []
 		},
 		{
 			name: "Rauner YMCA",
 			address: "2700 S Western Ave, Chicago, IL 60608",
 			type: ["Women's Basketball", "Men's Basketball", "Youth Basketball"],
-			level: ["Competitive"]
+			level: ["Competitive"],
+			coordinates: []
 		},
 		{
 			name: "High Ridge YMCA",
 			address: "2424 W Touhy Ave, Chicago, IL 60645",
 			type: ["Men's Basketball", "Youth Basketball", "Co-ed Basketball"],
-			level: ["Competitive" , "Recreational"]
+			level: ["Competitive" , "Recreational"],
+			coordinates: []
 		},
 		{
 			name: "Ping Tom Park",
 			address: "300 W 19th St, Chicago, IL 60616",
 			type: ["Men's Basketball", "Youth Basketball", "Co-ed Basketball"],
-			level: ["Recreational", "Open Gym"]
+			level: ["Recreational", "Open Gym"],
+			coordinates: []
 		},
 		{
 			name: "McGuane Park",
 			address: "2901 S Poplar Ave, Chicago, IL 60608",
 			type: ["Men's Basketball", "Youth Basketball"],
-			level: ["Recreational", "Open Gym"]
+			level: ["Recreational", "Open Gym"],
+			coordinates: []
 		},
 		{
 			name: "Chase Park",
 			address: "4701 N Ashland Ave, Chicago, IL 60640",
 			type: ["Women's Basketball"],
-			level: ["Competitive"]
+			level: ["Competitive"],
+			coordinates: []
 		},
 		{
 			name: "Lawndale Christian Fitness Center",
 			address: "3750 W Ogden Ave, Chicago, IL 60623",
 			type: ["Men's Basketball", "Women's Basketball"],
-			level: ["Competitive"]
+			level: ["Competitive"],
+			coordinates: []
 		}   
 	]
 	$("#results").hide();
@@ -71,7 +81,7 @@ $(document).ready(function(){
 			type: 'GET',
 			success: function(data){
 				console.log("Get success")
-				console.log(data);
+				console.log(data.rows[0].elements[0].distance.text.slice(0,-3));
 			},
 			error: function(error){
 				console.log(error);
@@ -91,23 +101,18 @@ $(document).ready(function(){
 			type: 'GET',
 			success: function(data){
 				console.log("Get success")
-				console.log(data);
+			
+				var lat = data.results[0].geometry.location.lat
+				var lng = data.results[0].geometry.location.lng
+				console.log(lat,lng);
+
+				return {lat: lat, lng: lng}
 			},
 			error: function(error){
 				console.log(error);
 			}
 		});
-
-		var coordinates = [];
-		var mapCoordinates = [];
-		/*var lng = results.geometry.location.lng
-		var lat = results.geometry.location.lat
-		coordinates.push(lng, lat);
-		console.log(coordinates);*/
-		/*mapCoordinates.push(coodinates.concat());*/
-	
 	}
-
 	getLocation(games[0].address); 
 
 //appends results below 
@@ -132,13 +137,13 @@ $(document).ready(function(){
 		for (var i = 0; i < games.length; i++) {
 			if (games[i].type.indexOf(type) >= 0 && games[i].level.indexOf(level) >= 0) {
 				// check for map distance, then order list by distance
-				checkDistance(zipcode, games[i].address);
-				
+				/*checkDistance(zipcode, games[i].address);*/				
 				//go thru data to find lat, long on map, then pin points on map
 		/*		getLocation(games[i].location);
 */
-				
-				results.push(games[i]);			
+				games[i].coordinates = getLocation(games[i].address);
+				results.push(games[i]);	
+
 			}
 			if (results.length === 0) {
 				$("#results").append("Sorry, there is no match.");
@@ -147,11 +152,10 @@ $(document).ready(function(){
 				showResults(results, type, level);
 			}
 		}
+		console.log(results);	
 	}
 //if there is a match, pinpoint gyms on map (location = gameLocations)
 //make locations an array
-
-	
 
 	$("#information").submit(function(e){
 		e.preventDefault();
@@ -159,21 +163,5 @@ $(document).ready(function(){
 		var level = $("#level").val();
 		var zipcode = $("#zipcode").val();
 		getGames(type, level, zipcode);
-	
-
-
 	});
-				
-	
-	
-
-
-	//pin matched results on map
-				/*
-				getLocation(games[i].location);
-				gameLocations = [];
-				console.log(long, lat)*/
-
-//order gyms by distance to zipcode
-
 });

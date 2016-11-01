@@ -38,15 +38,11 @@
 						</div> 
 						<div class="form-group">
 							<label for="zipcode" id = "zipcodeLabel">Your current location</label>
-								<input type="text" class="form-control" id="zipcode" placeholder="Enter zipcode">
+								<input type="text" class="form-control" id="zipcode" placeholder="Enter zipcode" required>
 						</div> 
 						<button id="submit" type="submit" class="btn btn-success btn-lg">Submit</button>
 						<div id="results"></div>
 					</form>
-					<!-- append results -->
-					<!-- <table class="table table-striped table-hover">
-					
-					</table> -->
 				</div>
 			</div>
 		</div>
@@ -55,17 +51,31 @@
 			var map;
 			var gameLocation;
 			function initMap() {
+				/*var gameLocations = {games.coordinates};*/
 				map = new google.maps.Map(document.getElementById('map'), {
 					center: {lat: 41.8781, lng: -87.6298},
 					zoom: 10
 				});
-				/*var marker = new google.maps.Marker({
-					position: gameLocations,
-					map: map,
-					title: 'Hello World!'
-				});*/
-			}
-		</script>
+				 // This event listener calls addMarker() when the map is clicked.
+  		/*	google.maps.event.addListener('#submit', 'click', function(event) {
+   				addMarker(games.coordinates);
+  			});
+  			// Add a marker at entered zipcode
+  			addMarker(zipcode, map);
+				}	*/
+
+/*			// Adds a marker to the map.
+			function addMarker(location, map) {
+			  // Add the marker at the clicked location, and add the next-available label
+			  // from the array of alphabetical characters.
+				var marker = new google.maps.Marker({
+    		position: gameLocations,
+    		/*label: labels[labelIndex++ % labels.length],
+    		map: map
+  			});
+			}*/}
+/*			google.maps.event.addDomListener(window, 'load', initialize);
+*/		</script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmd0xB_4HTb1gHimgKe97BXOUyCLj9dQA&callback=initMap"
 		async defer></script>
 	</body>
