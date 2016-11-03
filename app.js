@@ -89,7 +89,10 @@ $(document).ready(function(){
 		});    
 	}
 
-//get location of gyms
+	//gameLocations = coordinates of results[];
+	var gameLocations = [];
+
+	//get location of gyms
 	function getLocation(address) {
 		$.ajax({
 			url: 'https://maps.googleapis.com/maps/api/geocode/json',
@@ -105,19 +108,22 @@ $(document).ready(function(){
 				var lat = data.results[0].geometry.location.lat
 				var lng = data.results[0].geometry.location.lng
 				console.log(lat,lng);
-
-				return {lat: lat, lng: lng}
+				var position = {lat: lat, lng: lng};
+				console.log(position);
+				gameLocations.push(position);
+				console.log(gameLocations);
 			},
 			error: function(error){
 				console.log(error);
 			}
 		});
 	}
-	getLocation(games[0].address); 
+	/*getLocation(games[0].address); */
+
 
 //appends results below 
 	var showResults = function(results, type, level) {
-		console.log(results);
+		/*console.log(results);*/
 		// Iterate over results, create HTML for each listing, append to #results
 		$("#results").empty();
 		$("#results").show();
@@ -138,12 +144,12 @@ $(document).ready(function(){
 			if (games[i].type.indexOf(type) >= 0 && games[i].level.indexOf(level) >= 0) {
 				// check for map distance, then order list by distance
 				/*checkDistance(zipcode, games[i].address);*/				
-				//go thru data to find lat, long on map, then pin points on map
-		/*		getLocation(games[i].location);
-*/
-				games[i].coordinates = getLocation(games[i].address);
-				results.push(games[i]);	
+	
+				//push results to results array, then results will be shown thru showResults()
+				results.push(games[i]);
 
+				//coordinates {} is the outcome of getlocation(games[i].address)
+				games[i].coordinates = getLocation(games[i].address);
 			}
 			if (results.length === 0) {
 				$("#results").append("Sorry, there is no match.");
@@ -152,10 +158,39 @@ $(document).ready(function(){
 				showResults(results, type, level);
 			}
 		}
+		/*var getCoordinates = function(globalCoordinates) {
+			for (var i = 0; i < results.length; i++) {
+				results[i].coordinates.push(globalCoordinates[i]);
+			}
+		}
+		getCoordinates(globalCoordinates);*/
 		console.log(results);	
+
 	}
-//if there is a match, pinpoint gyms on map (location = gameLocations)
-//make locations an array
+
+//begin add marker
+	var marker, i;
+
+	function addMarkers(gameLocations) {
+    for (i = 0; i < gameLocations.length; i++) { 
+      marker = new google.maps.Marker({
+      position: new google.maps.LatLng(gameLocations[i].lat, gameLocations[i].lng),
+      map: map
+    });	
+	}
+
+	function infowindow(gameLocations, marker) {
+		var infowindow = new google.maps.InfoWindow();
+    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+      return function() {
+        infowindow.setContent(gameLocations[i].lat);
+        infowindow.open(map, marker);
+      }
+    })(marker, i));
+  	}
+	}
+
+//end add marker
 
 	$("#information").submit(function(e){
 		e.preventDefault();
@@ -163,5 +198,8 @@ $(document).ready(function(){
 		var level = $("#level").val();
 		var zipcode = $("#zipcode").val();
 		getGames(type, level, zipcode);
+		addMarkers(gameLocations);
+		/*infowindow(gameLocations, marker);*/
 	});
+
 });
