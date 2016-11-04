@@ -197,7 +197,7 @@ $(document).ready(function(){
 	$("#information").submit(function(e){
 		e.preventDefault();
 		$("#results").empty();
-		gameLocations.length = 0;
+		gameLocations.length === 0;
 		var type = $("#type").val();
 		var level = $("#level").val();
 		var zipcode = $("#zipcode").val();
