@@ -32,7 +32,7 @@
 							<label for="level">Competition Level</label>
 								<select id="level" class="form-control">
 									<option>Competitive</option>
-									<option>Recreation</option>
+									<option>Recreational</option>
 									<option>Open Gym</option>
 								</select>
 						</div> 
@@ -50,7 +50,7 @@
 		<script>
 			var map;
 			
-//begin google map 
+	//begin google map 
 	    function initMap() {	
 	     	var map = new google.maps.Map(document.getElementById('map'), {
 		      zoom: 10,
@@ -59,13 +59,14 @@
 		    });
 
 		    var myMarker = new google.maps.Marker({
-          position: {lat: 41.8781, lng: -87.6298},
-          map: map,
-          title: 'Hello Chicago!'
-        });
+	        position: {lat: 41.8781, lng: -87.6298},
+	        map: map,
+	        title: 'Hello Chicago!'
+	      });
 			}		
 //end google map
 		</script>
+		
 		<script async defer 
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmd0xB_4HTb1gHimgKe97BXOUyCLj9dQA&callback=initMap">
 		</script>

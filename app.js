@@ -80,7 +80,7 @@ $(document).ready(function(){
 			dataType: 'json',
 			type: 'GET',
 			success: function(data){
-				console.log("Get success")
+				// console.log("Get success")
 				console.log(data.rows[0].elements[0].distance.text.slice(0,-3));
 			},
 			error: function(error){
@@ -103,15 +103,16 @@ $(document).ready(function(){
 			dataType: 'json',
 			type: 'GET',
 			success: function(data){
-				console.log("Get success")
+				// console.log("Get success")
 			
 				var lat = data.results[0].geometry.location.lat
 				var lng = data.results[0].geometry.location.lng
-				console.log(lat,lng);
+				// console.log(lat,lng);
 				var position = {lat: lat, lng: lng};
-				console.log(position);
+				// console.log(position);
 				gameLocations.push(position);
-				console.log(gameLocations);
+				// console.log(gameLocations);
+						addMarkers(gameLocations);
 			},
 			error: function(error){
 				console.log(error);
@@ -149,13 +150,7 @@ $(document).ready(function(){
 
 				//coordinates {} is the outcome of getlocation(games[i].address)
 				games[i].coordinates = getLocation(games[i].address);
-			}
-			if (results.length === 0) {
-				var html = "";
-				html += "<h3>" + "Sorry, there is no match." + "</h3>";
-				$("#results").append(html);
-			} 
-			else {
+		
 				showResults(results, type, level);
 			}
 		}
@@ -165,24 +160,29 @@ $(document).ready(function(){
 			}
 		}
 		getCoordinates(globalCoordinates);*/
-		console.log(results);	
-
+		if (results.length === 0) {
+			var html = "";
+			html += "<h3>" + "Sorry, there is no match." + "</h3>";
+			$("#results").append(html);
+		} 		
 	}
 
 //begin add marker
 	var marker, i;
 
 	function addMarkers(gameLocations) {
+		console.log("length = " + gameLocations.length);
+		console.log(gameLocations)
     for (var i = 0; i < gameLocations.length; i++) { 
-      var gameLocation = gameLocations[i];
-      var marker = new google.maps.Marker({
-		    position: {lat: gameLocation[i].lat, lng: gameLocation[i].lng},
+      marker = new google.maps.Marker({
+		    position: {lat: gameLocations[i].lat, lng: gameLocations[i].lng},
 		    map: map
 		  });
 		}	
 	}
 
-	function infowindow(gameLocations) {
+	function addinfowindow(gameLocations) {
+		console.log(gameLocations)
 		var infowindow = new google.maps.InfoWindow();
     google.maps.event.addListener(marker, 'click', (function(marker, i) {
       return function() {
@@ -197,12 +197,12 @@ $(document).ready(function(){
 	$("#information").submit(function(e){
 		e.preventDefault();
 		$("#results").empty();
-		gameLocations.length = 0;
+
 		var type = $("#type").val();
 		var level = $("#level").val();
 		var zipcode = $("#zipcode").val();
 		getGames(type, level, zipcode);
-		addMarkers(gameLocations);
-		infowindow(gameLocations);
+		// addMarkers(gameLocations);
+		// addinfowindow(gameLocations);
 	});
 });
