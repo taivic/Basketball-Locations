@@ -129,10 +129,9 @@ $(document).ready(function(){
 		$("#results").show();
 		for (var i = 0; i < results.length; i++) {
 			var html = "";
-			html += "<p><strong>" + results[i].name + "</strong></p>";
-			html += "<p>" + results[i].address + "</p>";
-			html += "<p>" + type  + "</p>";
-			html += "<p>" + level  + "</p><br>";
+			html += "<h3>" + results[i].name + 
+				" (" + results[i].address + " )" + "</h3>";
+			html += "<h4>" + type  + ": " + level + "</h4><br>";
 			$('#results').append(html);      
 		}
 	}
@@ -152,7 +151,9 @@ $(document).ready(function(){
 				games[i].coordinates = getLocation(games[i].address);
 			}
 			if (results.length === 0) {
-				$("#results").append("Sorry, there is no match.");
+				var html = "";
+				html += "<h3>" + "Sorry, there is no match." + "</h3>";
+				$("#results").append(html);
 			} 
 			else {
 				showResults(results, type, level);
@@ -172,14 +173,16 @@ $(document).ready(function(){
 	var marker, i;
 
 	function addMarkers(gameLocations) {
-    for (i = 0; i < gameLocations.length; i++) { 
-      marker = new google.maps.Marker({
-      position: new google.maps.LatLng(gameLocations[i].lat, gameLocations[i].lng),
-      map: map
-    });	
+    for (var i = 0; i < gameLocations.length; i++) { 
+      var gameLocation = gameLocations[i];
+      var marker = new google.maps.Marker({
+		    position: {lat: gameLocation[i].lat, lng: gameLocation[i].lng},
+		    map: map
+		  });
+		}	
 	}
 
-	function infowindow(gameLocations, marker) {
+	function infowindow(gameLocations) {
 		var infowindow = new google.maps.InfoWindow();
     google.maps.event.addListener(marker, 'click', (function(marker, i) {
       return function() {
@@ -187,19 +190,19 @@ $(document).ready(function(){
         infowindow.open(map, marker);
       }
     })(marker, i));
-  	}
 	}
 
 //end add marker
 
 	$("#information").submit(function(e){
 		e.preventDefault();
+		$("#results").empty();
+		gameLocations.length = 0;
 		var type = $("#type").val();
 		var level = $("#level").val();
 		var zipcode = $("#zipcode").val();
 		getGames(type, level, zipcode);
 		addMarkers(gameLocations);
-		/*infowindow(gameLocations, marker);*/
+		infowindow(gameLocations);
 	});
-
 });
